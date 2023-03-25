@@ -43,29 +43,26 @@ public class SeatController {
 
         /*
             Durchlaufe jeden Sitzplatz und gib bei seiner Verfügbarkeit seine Reihennummer,
-            seine Spaltennummer und seinen Preis aus. Für den letzten Sitzplatz wird das kein Komma
-            am Ende angehängt.
+            seine Spaltennummer und seinen Preis aus.
          */
         for (int i = 1; i <= seats.getTotalRows(); i++) {
             for (int j = 1; j <= seats.getTotalColumns(); j++) {
-                if (i == seats.getTotalRows() && j == seats.getTotalColumns()) {
-                    if (seats.getAvailableSeats()[i-1][j-1].isAvailable()) {
-                        json += "\t\t{\n" +
-                                "\t\t\t\"row\":" + seats.getAvailableSeats()[i-1][j-1].getRow() + ",\n" +
-                                "\t\t\t\"column\":" + seats.getAvailableSeats()[i-1][j-1].getColumn() + ",\n" +
-                                "\t\t\t\"price\":" + seats.getAvailableSeats()[i-1][j-1].getPrice() + "\n" +
-                                "\t\t}\n";
-                    }
-                } else {
-                    if (seats.getAvailableSeats()[i-1][j-1].isAvailable()) {
+                if (seats.getAvailableSeats()[i-1][j-1].isAvailable()) {
                         json += "\t\t{\n" +
                                 "\t\t\t\"row\":" + seats.getAvailableSeats()[i-1][j-1].getRow()  + ",\n" +
                                 "\t\t\t\"column\":" + seats.getAvailableSeats()[i-1][j-1].getColumn() + ",\n" +
                                 "\t\t\t\"price\":" + seats.getAvailableSeats()[i-1][j-1].getPrice() + "\n" +
                                 "\t\t},\n";
-                    }
                 }
             }
+        }
+        
+        /*
+            Vor dem Abschluss der verfügbaren Sitze an letzten Sitzplatz das Komma entfernen,
+            um den JSON-Konventionen zu entsprechen
+         */
+        if (json.charAt(json.length() - 2) == komma) {
+            json = json.substring(0, json.length() -2) + "\n";
         }
 
         // Abschluss
